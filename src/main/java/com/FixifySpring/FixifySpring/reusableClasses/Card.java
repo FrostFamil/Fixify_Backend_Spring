@@ -1,4 +1,4 @@
-package reusableClasses;
+package com.FixifySpring.FixifySpring.reusableClasses;
 
 import java.util.UUID;
 

@@ -1,14 +1,15 @@
-package controllers;
+package com.FixifySpring.FixifySpring.controllers;
 
-import models.User;
+import com.FixifySpring.FixifySpring.models.User;
+import com.FixifySpring.FixifySpring.service.UserService;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import service.UserService;
 
 
 @RequestMapping("api/v2")
+@RestController
 public class AuthenticationController {
 
     private final UserService userService;
@@ -18,8 +19,9 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
+
     @PostMapping("/test")
-    public void test(@Validated @NonNull @RequestBody User user){
-        userService.test(user);
+    public String test(@Validated @NonNull @RequestBody User user){
+        return userService.test(user);
     }
 }
