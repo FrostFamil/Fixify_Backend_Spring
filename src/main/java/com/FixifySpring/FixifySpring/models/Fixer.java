@@ -2,17 +2,14 @@ package com.FixifySpring.FixifySpring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import com.FixifySpring.FixifySpring.reusableClasses.Card;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-@Document(collection = "User")
-public class User {
+@Document(collection = "Fixer")
+public class Fixer {
 
     @NotBlank
     private final String email;
@@ -26,7 +23,7 @@ public class User {
     private final String phone;
     private final String status;
 
-    public User(
+    public Fixer(
             @JsonProperty("email") String email,
             @JsonProperty("password") String password,
             @JsonProperty("firstName") String firstName,
