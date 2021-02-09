@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface FixerRepository extends MongoRepository<Fixer, Long> {
     Optional<Fixer> findFixerByEmail(String email);
+    Optional<Fixer> findFixerById(String Id);
 }
