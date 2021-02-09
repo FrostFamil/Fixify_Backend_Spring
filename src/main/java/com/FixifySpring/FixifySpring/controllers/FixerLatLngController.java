@@ -23,4 +23,9 @@ public class FixerLatLngController {
     public ResponseEntity<?> addFixersLocation(@Validated @RequestBody FixerLatLng fixerLocationRequest){
         return fixerLatLngService.addFixersLocation(fixerLocationRequest);
     }
+
+    @GetMapping("/userSeeFixer")
+    public ResponseEntity<?> userSeeFixer(@RequestParam("fixerId") String creator){
+        return fixerLatLngService.userSeeFixer(creator);
+    }
 }

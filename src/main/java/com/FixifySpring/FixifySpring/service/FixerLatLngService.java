@@ -44,4 +44,13 @@ public class FixerLatLngService {
         }
     }
 
+    public ResponseEntity<?> userSeeFixer(String creator) {
+        Optional<FixerLatLng> existLocationForFixer = fixerLatLngRepository.findFixerLatLngByCreator(creator);
+        if(existLocationForFixer.isEmpty()){
+            return new ResponseEntity<>("Location does not exist for this fixer id", HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(existLocationForFixer);
+    }
+
 }
