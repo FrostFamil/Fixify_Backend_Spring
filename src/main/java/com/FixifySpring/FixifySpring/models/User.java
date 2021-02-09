@@ -3,28 +3,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.FixifySpring.FixifySpring.reusableClasses.Card;
 
 import javax.validation.constraints.NotBlank;
+import java.util.UUID;
 
-@Getter
 @Setter
+@Getter
 @Document(collection = "User")
 public class User {
 
+    @Id
+    private String id;
     @NotBlank
-    private final String email;
+    private String email;
     @NotBlank
-    private final String password;
+    private String password;
     @NotBlank
-    private final String firstName;
+    private String firstName;
     @NotBlank
-    private final String lastName;
+    private String lastName;
     @NotBlank
-    private final String phone;
-    private final String status;
+    private String phone;
+    private String status;
 
     public User(
             @JsonProperty("email") String email,
@@ -34,6 +38,7 @@ public class User {
             @JsonProperty("phone") String phone,
             @JsonProperty("status") String status) {
 
+        this.id = UUID.randomUUID().toString();
         this.email = email;
         this.password = password;
         this.firstName = firstName;
