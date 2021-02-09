@@ -1,5 +1,6 @@
 package com.FixifySpring.FixifySpring.controllers;
 
+import com.FixifySpring.FixifySpring.RequestResponseFiles.LoginRequest;
 import com.FixifySpring.FixifySpring.models.Fixer;
 import com.FixifySpring.FixifySpring.models.User;
 import com.FixifySpring.FixifySpring.service.UserService;
@@ -34,5 +35,15 @@ public class AuthenticationController {
     @PostMapping("/fixerSignup")
     public ResponseEntity<?> fixerSignup(@Validated @NonNull @RequestBody Fixer fixer) {
         return userService.fixerSignup(fixer);
+    }
+
+    @PostMapping("/userLogin")
+    public ResponseEntity<?> userLogin(@Validated @RequestBody LoginRequest loginRequest) {
+        return userService.userLogin(loginRequest);
+    }
+
+    @PostMapping("/fixerLogin")
+    public ResponseEntity<?> fixerLogin(@Validated @RequestBody LoginRequest loginRequest) {
+        return userService.fixerLogin(loginRequest);
     }
 }

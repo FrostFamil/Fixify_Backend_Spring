@@ -1,9 +1,11 @@
 package com.FixifySpring.FixifySpring.service;
 
+import com.FixifySpring.FixifySpring.RequestResponseFiles.LoginRequest;
 import com.FixifySpring.FixifySpring.models.Fixer;
 import com.FixifySpring.FixifySpring.models.User;
 import com.FixifySpring.FixifySpring.repository.FixerRepository;
 import com.FixifySpring.FixifySpring.repository.UserRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -46,5 +48,27 @@ public class UserService {
 
         fixerRepository.save(fixer);
         return new ResponseEntity<>("Fixer added", HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<?> userLogin(LoginRequest loginRequest) {
+        //user check
+        Optional<User> existUser = repository.findUserByEmail(loginRequest.getEmail());
+        if (existUser.isEmpty()) {
+            return new ResponseEntity<>("User does not exist with this email", HttpStatus.BAD_REQUEST);
+        }
+
+
+        return ResponseEntity.ok(existUser);
+    }
+
+    public ResponseEntity<?> fixerLogin(LoginRequest loginRequest) {
+        //user check
+        Optional<Fixer> existFixer = fixerRepository.findFixerByEmail(loginRequest.getEmail());
+        if (existFixer.isEmpty()) {
+            return new ResponseEntity<>("Fixer does not exist with this email", HttpStatus.BAD_REQUEST);
+        }
+
+
+        return ResponseEntity.ok(existFixer);
     }
 }
