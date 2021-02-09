@@ -71,4 +71,24 @@ public class UserService {
 
         return ResponseEntity.ok(existFixer);
     }
+
+    public ResponseEntity<?> getUserProfile(String email) {
+        //user check
+        Optional<User> existUser = repository.findUserByEmail(email);
+        if (existUser.isEmpty()) {
+            return new ResponseEntity<>("User does not exist with this email", HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(existUser);
+    }
+
+    public ResponseEntity<?> getFixerProfile(String email) {
+        //user check
+        Optional<Fixer> existFixer = fixerRepository.findFixerByEmail(email);
+        if (existFixer.isEmpty()) {
+            return new ResponseEntity<>("Fixer does not exist with this email", HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(existFixer);
+    }
 }
