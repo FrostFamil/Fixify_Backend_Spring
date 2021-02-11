@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public interface RequestRepository extends MongoRepository<Request, Long> {
     Optional<Request> findRequestByRequestName(String requestName);
+    Optional<Request> deleteByRequestName(String requestName);
     Optional<Request> findRequestByCreatorAndAvailable(String creator, String available);
     List<Request> findAllByCreatorAndStatus(String creator, String status);
     List<Request> findAllByServiceTypeAndStatus(String serviceType, String status);

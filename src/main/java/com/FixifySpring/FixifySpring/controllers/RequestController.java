@@ -1,6 +1,7 @@
 package com.FixifySpring.FixifySpring.controllers;
 
 import com.FixifySpring.FixifySpring.RequestResponseFiles.FixerAcceptRequest;
+import com.FixifySpring.FixifySpring.RequestResponseFiles.FixerSetPriceRequest;
 import com.FixifySpring.FixifySpring.RequestResponseFiles.UpdateProfileRequest;
 import com.FixifySpring.FixifySpring.models.FixerPushNotification;
 import com.FixifySpring.FixifySpring.models.Request;
@@ -60,5 +61,25 @@ public class RequestController {
     @GetMapping("/userFindHisCurrentRequest")
     public ResponseEntity<?> userFindHisCurrentRequest(@RequestParam("creator") String creator) {
         return requestService.userFindHisCurrentRequest(creator);
+    }
+
+    @DeleteMapping("/deleteRequest")
+    public ResponseEntity<?> deleteRequest(@RequestParam("requestName") String requestName) {
+        return requestService.deleteRequest(requestName);
+    }
+
+    @PutMapping("/fixerSetPriceForRequest")
+    public ResponseEntity<?> fixerSetPriceForRequest(@Validated @RequestBody FixerSetPriceRequest fixerSetPriceRequest) {
+        return requestService.fixerSetPriceForRequest(fixerSetPriceRequest);
+    }
+
+    @GetMapping("/userAcceptPriceForCurrentRequest")
+    public ResponseEntity<?> userAcceptPriceForCurrentRequest(@RequestParam("requestName") String requestName) {
+        return requestService.userAcceptPriceForCurrentRequest(requestName);
+    }
+
+    @GetMapping("/userDeclinePriceForCurrentRequest")
+    public ResponseEntity<?> userDeclinePriceForCurrentRequest(@RequestParam("requestName") String requestName) {
+        return requestService.userDeclinePriceForCurrentRequest(requestName);
     }
 }

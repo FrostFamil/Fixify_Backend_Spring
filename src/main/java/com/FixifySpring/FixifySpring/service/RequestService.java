@@ -1,6 +1,7 @@
 package com.FixifySpring.FixifySpring.service;
 
 import com.FixifySpring.FixifySpring.RequestResponseFiles.FixerAcceptRequest;
+import com.FixifySpring.FixifySpring.RequestResponseFiles.FixerSetPriceRequest;
 import com.FixifySpring.FixifySpring.RequestResponseFiles.UpdateProfileRequest;
 import com.FixifySpring.FixifySpring.models.FixerPushNotification;
 import com.FixifySpring.FixifySpring.models.Request;
@@ -106,6 +107,70 @@ public class RequestService {
         if (existRequest.isEmpty()) {
             return new ResponseEntity<>("This User does not have any available request", HttpStatus.BAD_REQUEST);
         }
+
+        return ResponseEntity.ok(existRequest);
+    }
+
+    public ResponseEntity<?> deleteRequest(String requestName) {
+        //request check
+        Optional<Request> existRequest = requestRepository.findRequestByRequestName(requestName);
+        if (existRequest.isEmpty()) {
+            return new ResponseEntity<>("Request with this Id does not exist", HttpStatus.BAD_REQUEST);
+        }
+
+        requestRepository.deleteByRequestName(requestName);
+        return ResponseEntity.ok("Request deleted successfully");
+    }
+
+    public ResponseEntity<?> fixerSetPriceForRequest(FixerSetPriceRequest fixerSetPriceRequest) {
+        //request check
+        Optional<Request> existRequest = requestRepository.findRequestByRequestName(fixerSetPriceRequest.getRequestName());
+        if (existRequest.isEmpty()) {
+            return new ResponseEntity<>("Request does not exist with this ID", HttpStatus.BAD_REQUEST);
+        }
+
+        existRequest.filter(p -> {
+            p.setPriceStatus("Decided");
+            p.setPrice(fixerSetPriceRequest.getPrice());
+            p.setAcceptor(fixerSetPriceRequest.getFixerId());
+            p.setStatus("Pending");
+            return true;
+        });
+        requestRepository.save(existRequest.get());
+
+        return ResponseEntity.ok(existRequest);
+    }
+
+    public ResponseEntity<?> userAcceptPriceForCurrentRequest(String requestName) {
+        //request check
+        Optional<Request> existRequest = requestRepository.findRequestByRequestName(requestName);
+        if (existRequest.isEmpty()) {
+            return new ResponseEntity<>("Request does not exist with this ID", HttpStatus.BAD_REQUEST);
+        }
+
+        existRequest.filter(p -> {
+            p.setPriceStatus("Done");
+            return true;
+        });
+        requestRepository.save(existRequest.get());
+
+        return ResponseEntity.ok(existRequest);
+    }
+
+    public ResponseEntity<?> userDeclinePriceForCurrentRequest(String requestName) {
+        //request check
+        Optional<Request> existRequest = requestRepository.findRequestByRequestName(requestName);
+        if (existRequest.isEmpty()) {
+            return new ResponseEntity<>("Request does not exist with this ID", HttpStatus.BAD_REQUEST);
+        }
+
+        existRequest.filter(p -> {
+            p.setPriceStatus("Not Decided");
+            p.setStatus("Not Accepted");
+            p.setPrice("0");
+            return true;
+        });
+        requestRepository.save(existRequest.get());
 
         return ResponseEntity.ok(existRequest);
     }
