@@ -1,5 +1,7 @@
 package com.FixifySpring.FixifySpring.controllers;
 
+import com.FixifySpring.FixifySpring.RequestResponseFiles.FixerAcceptRequest;
+import com.FixifySpring.FixifySpring.RequestResponseFiles.UpdateProfileRequest;
 import com.FixifySpring.FixifySpring.models.FixerPushNotification;
 import com.FixifySpring.FixifySpring.models.Request;
 import com.FixifySpring.FixifySpring.service.NotificationService;
@@ -33,5 +35,30 @@ public class RequestController {
     @GetMapping("/fixerGetRelatedRequests")
     public ResponseEntity<?> fixerGetRelatedRequests(@RequestParam("serviceType") String serviceType, @RequestParam("status") String status){
         return requestService.fixerGetRelatedRequests(serviceType, status);
+    }
+
+    @GetMapping("/getRequestsForFixerByStatus")
+    public ResponseEntity<?> getRequestsForFixerByStatus(@RequestParam("acceptor") String acceptor, @RequestParam("status") String status){
+        return requestService.getRequestsForFixerByStatus(acceptor, status);
+    }
+
+    @GetMapping("/userFinishRequest")
+    public ResponseEntity<?> userFinishRequest(@RequestParam("requestName") String requestName) {
+        return requestService.userFinishRequest(requestName);
+    }
+
+    @PostMapping("/fixerAcceptRequest")
+    public ResponseEntity<?> fixerAcceptRequest(@Validated @RequestBody FixerAcceptRequest fixerAcceptRequest) {
+        return requestService.fixerAcceptRequest(fixerAcceptRequest);
+    }
+
+    @GetMapping("/fixerSeeRequest")
+    public ResponseEntity<?> fixerSeeRequest(@RequestParam("requestName") String requestName) {
+        return requestService.fixerSeeRequest(requestName);
+    }
+
+    @GetMapping("/userFindHisCurrentRequest")
+    public ResponseEntity<?> userFindHisCurrentRequest(@RequestParam("creator") String creator) {
+        return requestService.userFindHisCurrentRequest(creator);
     }
 }

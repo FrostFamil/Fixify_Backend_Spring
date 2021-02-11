@@ -11,10 +11,12 @@ import java.util.UUID;
 
 @Setter
 @Getter
-@Document(collection = "Requests")
+@Document(collection = "Request")
 public class Request {
     @Id
     private String id;
+    @NotBlank
+    private String requestName;
     @NotBlank
     private String latitudeFrom;
     @NotBlank
@@ -58,6 +60,7 @@ public class Request {
             @JsonProperty("address") String address) {
 
         this.id = UUID.randomUUID().toString();
+        this.requestName = this.id;
         this.latitudeFrom = latitudeFrom;
         this.longitudeFrom = longitudeFrom;
         this.creator = creator;
