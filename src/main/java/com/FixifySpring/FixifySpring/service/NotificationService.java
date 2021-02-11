@@ -19,10 +19,6 @@ public class NotificationService {
     private FixerPushNotificationRepository fixerPushNotificationRepository;
     @Autowired
     private UserPushNotificationRepository userPushNotificationRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private FixerRepository fixerRepository;
 
     public ResponseEntity<?> addFixersPushToken(FixerPushNotification fixerPushNotiRequest) {
         Optional<FixerPushNotification> existFixerToken = fixerPushNotificationRepository.findByFixerId(fixerPushNotiRequest.getFixerId());
