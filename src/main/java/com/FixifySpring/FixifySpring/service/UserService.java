@@ -7,18 +7,12 @@ import com.FixifySpring.FixifySpring.models.Fixer;
 import com.FixifySpring.FixifySpring.models.User;
 import com.FixifySpring.FixifySpring.repository.FixerRepository;
 import com.FixifySpring.FixifySpring.repository.UserRepository;
-import com.FixifySpring.FixifySpring.reusableClasses.Card;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.validation.constraints.NotBlank;
-import java.beans.BeanProperty;
 import java.util.Optional;
 
 @Service
@@ -34,42 +28,56 @@ public class UserService {
     }
 
     public ResponseEntity<?> userSignup(User user){
+        //hashing password
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         //user check
         Optional<User> existUser = repository.findUserByEmail(user.getEmail());
         if (!existUser.isEmpty()) {
             return new ResponseEntity<>("User exist with this email", HttpStatus.BAD_REQUEST);
         }
+
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         repository.save(user);
         return new ResponseEntity<>("User added", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> fixerSignup(Fixer fixer){
+        //hashing password
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         //fixer check
         Optional<Fixer> existFixer = fixerRepository.findFixerByEmail(fixer.getEmail());
         if (!existFixer.isEmpty()) {
             return new ResponseEntity<>("Fixer exist with this email", HttpStatus.BAD_REQUEST);
         }
 
+        fixer.setPassword(bCryptPasswordEncoder.encode(fixer.getPassword()));
         fixerRepository.save(fixer);
         return new ResponseEntity<>("Fixer added", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> userLogin(LoginRequest loginRequest) {
+        //hashing password
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         //user check
         Optional<User> existUser = repository.findUserByEmail(loginRequest.getEmail());
         if (existUser.isEmpty()) {
             return new ResponseEntity<>("User does not exist with this email", HttpStatus.BAD_REQUEST);
+        } else if (!bCryptPasswordEncoder.matches(loginRequest.getPassword(), existUser.get().getPassword())) {
+            return new ResponseEntity<>("Password does not match", HttpStatus.BAD_REQUEST);
         }
-
 
         return ResponseEntity.ok(existUser);
     }
 
     public ResponseEntity<?> fixerLogin(LoginRequest loginRequest) {
+        //hashing password
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         //fixer check
         Optional<Fixer> existFixer = fixerRepository.findFixerByEmail(loginRequest.getEmail());
         if (existFixer.isEmpty()) {
             return new ResponseEntity<>("Fixer does not exist with this email", HttpStatus.BAD_REQUEST);
+        } else if (!bCryptPasswordEncoder.matches(loginRequest.getPassword(), existFixer.get().getPassword())) {
+            return new ResponseEntity<>("Password does not match", HttpStatus.BAD_REQUEST);
         }
 
 
